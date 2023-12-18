@@ -65,12 +65,7 @@ class Trans:
            
         file.close()
 
-
-
-
-
-
-Trans.test()
+Trans.csvTrans()
 
 
 
