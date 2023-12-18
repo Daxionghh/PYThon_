@@ -6,11 +6,10 @@ class Trans:
     xml_path = "test.xml"
     csv_path = "test.csv"
 
-    """
-    将xml转为csv
-    """
     def xmlTrans():
-
+        """
+        将xml转为csv
+        """
         mytree = ET.parse(Trans.xml_path)
         myroot = mytree.getroot()
         print(myroot.items())
@@ -36,21 +35,56 @@ class Trans:
             writer.writeheader()
             writer.writerows(list)
 
+      #  print(list)
 
 
-    """
-    将csv转为xml
-    """
-    def csvTrans():
 
+    def csvTrans_01():
+        """
+        将csv转为xml
+        """
         file = open(Trans.csv_path,"r")
-        dict_data = csv.DictReader(file,dialect='excel',skipinitialspace = True)        
+        dict_data = csv.reader(file,dialect='excel',skipinitialspace = True)
+        list_ = []
+        for data in dict_data:
+            if not data:
+                continue
+            list_.append(data)
+        file.close()
+
+        root = ET.Element("collection")        
+        root.attrib["shelf"] = "New Arrivals"
+
+        for movies_01 in list_[1:]:
+            i = 0
+            movie = ET.SubElement(root, list_[0][0])
+            movie.attrib["title"] = movies_01[i]
+            
+            for detls in list_[0][1:]:
+                if movies_01[i+1] != '-':
+                    detl = ET.SubElement(movie,detls)               
+                    detl.text = movies_01[i+1]
+                else:
+                    pass
+                i = i + 1   
+            
+        tree = ET.ElementTree(root)
+        tree.write("test01.xml", encoding ="utf-8",xml_declaration = True)
+
+    def csvTrans_02():
+        """
+        将csv转为xml
+        """
+        file = open(Trans.csv_path,"r")
+        dict_data = csv.DictReader(file,dialect='excel',skipinitialspace = True)
+        
 
         root = ET.Element("collection")        
         root.attrib["shelf"] = "New Arrivals"
 
         for datas in dict_data:
             list01 = list(datas.keys())
+            print(list01)
             movie = ET.SubElement(root,list01[0])
             movie.attrib["title"] = datas.get(list01[0])
             for key in list01:
@@ -65,7 +99,12 @@ class Trans:
            
         file.close()
 
-Trans.csvTrans()
+
+
+
+
+
+Trans.csvTrans_01()
 
 
 
