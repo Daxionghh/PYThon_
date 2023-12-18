@@ -87,8 +87,8 @@ class Trans:
             print(list01)
             movie = ET.SubElement(root,list01[0])
             movie.attrib["title"] = datas.get(list01[0])
-            for key in list01:
-                if datas.get(key) != '-' and key != "movie" :
+            for key in list01[1:]:
+                if datas.get(key) != '-':
                     detl = ET.SubElement(movie,key)
                     detl.text = datas.get(key)
                 else:
@@ -104,7 +104,7 @@ class Trans:
 
 
 
-Trans.csvTrans_01()
+Trans.csvTrans_02()
 
 
 
